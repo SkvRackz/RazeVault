@@ -1,0 +1,213 @@
+[
+  {
+    "id": "2048",
+    "title": "2048 Classic",
+    "category": "Puzzle",
+    "description": "Slide matching numbered tiles across the 4x4 grid and merge them to reach the elusive 2048 tile.",
+    "rating": 4.9,
+    "plays": "28.4K",
+    "author": "Gabriele Cirulli",
+    "icon": "🔢",
+    "themeColor": "from-amber-500/20 to-orange-500/20",
+    "accentColor": "#f59e0b",
+    "iframeUrl": "/games/2048/index.html",
+    "iframe": "<iframe src=\"/games/2048/index.html\" title=\"2048 Classic\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Arrow Keys / WASD: Slide tiles in four directions",
+      "Touch Swipe: Slide tiles on touchscreens",
+      "Goal: Merge matching numbers until you construct 2048"
+    ]
+  },
+  {
+    "id": "tetris",
+    "title": "Tetris Block Master",
+    "category": "Puzzle",
+    "description": "Rotate, translate, and hard-drop falling polyomino blocks to clear horizontal lines and level up.",
+    "rating": 4.9,
+    "plays": "34.1K",
+    "author": "Alexey Pajitnov",
+    "icon": "🕹️",
+    "themeColor": "from-purple-500/20 to-indigo-500/20",
+    "accentColor": "#8b5cf6",
+    "iframeUrl": "/games/tetris/index.html",
+    "iframe": "<iframe src=\"/games/tetris/index.html\" title=\"Tetris Block Master\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Arrow Left / Right: Move block sideways",
+      "Arrow Up / X: Rotate tetromino clockwise",
+      "Arrow Down: Soft drop for faster descent",
+      "Space: Hard drop instantly to the bottom",
+      "C: Hold piece in storage"
+    ]
+  },
+  {
+    "id": "snake",
+    "title": "Retro Snake",
+    "category": "Arcade",
+    "description": "Navigate the hungry serpent across the grid, swallowing glowing fruit while avoiding walls and self-collision.",
+    "rating": 4.8,
+    "plays": "22.6K",
+    "author": "Gremlin Industries",
+    "icon": "🐍",
+    "themeColor": "from-cyan-500/20 to-blue-500/20",
+    "accentColor": "#38bdf8",
+    "iframeUrl": "/games/snake/index.html",
+    "iframe": "<iframe src=\"/games/snake/index.html\" title=\"Retro Snake\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Arrow Keys / WASD: Turn snake up, down, left, right",
+      "Space: Pause or resume gameplay",
+      "Goal: Collect maximum dots without hitting borders"
+    ]
+  },
+  {
+    "id": "dino",
+    "title": "Dino T-Rex Runner",
+    "category": "Action",
+    "description": "Sprint endlessly through the prehistoric desert, vaulting over sharp cacti and ducking under swooping pterodactyls.",
+    "rating": 4.8,
+    "plays": "19.8K",
+    "author": "Chromium Team",
+    "icon": "🦖",
+    "themeColor": "from-emerald-500/20 to-teal-500/20",
+    "accentColor": "#10b981",
+    "iframeUrl": "/games/dino/index.html",
+    "iframe": "<iframe src=\"/games/dino/index.html\" title=\"Dino T-Rex Runner\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Space / Arrow Up: Jump over cacti and low obstacles",
+      "Arrow Down: Duck under flying pterodactyls",
+      "Tap / Click: Jump on mobile screens"
+    ]
+  },
+  {
+    "id": "flappy",
+    "title": "Flappy Bird",
+    "category": "Arcade",
+    "description": "Carefully time your wing flaps to navigate narrow vertical pipe gaps without grazing the obstacles.",
+    "rating": 4.7,
+    "plays": "18.3K",
+    "author": "Dong Nguyen",
+    "icon": "🐤",
+    "themeColor": "from-yellow-500/20 to-amber-500/20",
+    "accentColor": "#f59e0b",
+    "iframeUrl": "/games/flappy/index.html",
+    "iframe": "<iframe src=\"/games/flappy/index.html\" title=\"Flappy Bird\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Space / Left Click: Flap wings upward",
+      "Touch Tap: Flap wings on touchscreens",
+      "Gravity: Regulate fall speed between obstacles"
+    ]
+  },
+  {
+    "id": "breakout",
+    "title": "Breakout Retro",
+    "category": "Retro",
+    "description": "Deflect the bouncing ball with your paddle to shatter colorful brick walls and rack up high multiplier scores.",
+    "rating": 4.8,
+    "plays": "15.4K",
+    "author": "Atari Labs",
+    "icon": "🧱",
+    "themeColor": "from-blue-500/20 to-indigo-500/20",
+    "accentColor": "#3b82f6",
+    "iframeUrl": "/games/breakout/index.html",
+    "iframe": "<iframe src=\"/games/breakout/index.html\" title=\"Breakout Retro\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Mouse / Touch: Glide paddle horizontally",
+      "Arrow Left / Right: Keyboard paddle steering",
+      "Goal: Demolish all rows before losing 3 balls"
+    ]
+  },
+  {
+    "id": "pong",
+    "title": "Pong Classic",
+    "category": "Retro",
+    "description": "The grandfather of video games. Duel against the adaptive AI or challenge a friend in 2-player mode.",
+    "rating": 4.7,
+    "plays": "12.9K",
+    "author": "Allan Alcorn",
+    "icon": "🏓",
+    "themeColor": "from-teal-500/20 to-emerald-500/20",
+    "accentColor": "#14b8a6",
+    "iframeUrl": "/games/pong/index.html",
+    "iframe": "<iframe src=\"/games/pong/index.html\" title=\"Pong Classic\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Player 1: W / S or Mouse vertical movement",
+      "Player 2: Up / Down arrow keys",
+      "First to score 7 points wins the match"
+    ]
+  },
+  {
+    "id": "space-invaders",
+    "title": "Space Invaders",
+    "category": "Action",
+    "description": "Command your ground cannon to repel incoming waves of alien invaders before they reach Earth's surface.",
+    "rating": 4.9,
+    "plays": "25.7K",
+    "author": "Tomohiro Nishikado",
+    "icon": "👾",
+    "themeColor": "from-green-500/20 to-emerald-500/20",
+    "accentColor": "#22c55e",
+    "iframeUrl": "/games/space-invaders/index.html",
+    "iframe": "<iframe src=\"/games/space-invaders/index.html\" title=\"Space Invaders\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Arrow Left / Right: Move cannon sideways",
+      "Space: Fire laser beam upward",
+      "Dodge enemy bomb drops while eliminating rows"
+    ]
+  },
+  {
+    "id": "hextris",
+    "title": "Hex Rush",
+    "category": "Puzzle",
+    "description": "Rotate the central hexagon to catch fast incoming color bars and match 3 of the same color to clear them.",
+    "rating": 4.8,
+    "plays": "16.2K",
+    "author": "Logan Engstrom",
+    "icon": "⬡",
+    "themeColor": "from-amber-500/20 to-rose-500/20",
+    "accentColor": "#f59e0b",
+    "iframeUrl": "/games/hextris/index.html",
+    "iframe": "<iframe src=\"/games/hextris/index.html\" title=\"Hex Rush\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Arrow Left / Right or A / D: Rotate hexagon 60 degrees",
+      "Click/Tap Left or Right side of screen on mobile",
+      "Match 3 consecutive colors on any side to pop"
+    ]
+  },
+  {
+    "id": "minesweeper",
+    "title": "Minesweeper Classic",
+    "category": "Strategy",
+    "description": "Calculate mine coordinates through numerical clues and flag dangerous squares to clear the minefield.",
+    "rating": 4.8,
+    "plays": "20.5K",
+    "author": "Curt Johnson",
+    "icon": "💣",
+    "themeColor": "from-slate-500/20 to-zinc-500/20",
+    "accentColor": "#64748b",
+    "iframeUrl": "/games/minesweeper/index.html",
+    "iframe": "<iframe src=\"/games/minesweeper/index.html\" title=\"Minesweeper Classic\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Left Click: Reveal selected grid cell",
+      "Right Click / Long Press: Place or remove danger flag",
+      "Click Smiley Face: Start a fresh game"
+    ]
+  },
+  {
+    "id": "tictactoe",
+    "title": "Tic-Tac-Toe Pro",
+    "category": "Strategy",
+    "description": "Engage in quick tactical matches against an unbeatable Minimax algorithm or play locally with a friend.",
+    "rating": 4.6,
+    "plays": "11.3K",
+    "author": "Classic Games Lab",
+    "icon": "❌",
+    "themeColor": "from-sky-500/20 to-rose-500/20",
+    "accentColor": "#0ea5e9",
+    "iframeUrl": "/games/tictactoe/index.html",
+    "iframe": "<iframe src=\"/games/tictactoe/index.html\" title=\"Tic-Tac-Toe Pro\" width=\"100%\" height=\"100%\" style=\"border:none; width:100%; height:100%;\" allow=\"autoplay; fullscreen\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-pointer-lock\"></iframe>",
+    "controls": [
+      "Click any cell: Place your X or O marker",
+      "Mode Switch: Toggle between AI Minimax and 2 Players",
+      "Align 3 identical symbols in a row to win"
+    ]
+  }
+]

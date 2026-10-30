@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hex Rush</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #090d16;
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 12px;
+      overflow: hidden;
+    }
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .hud span { color: #f59e0b; }
+    .game-box {
+      position: relative;
+      border: 2px solid #334155;
+      border-radius: 8px;
+      background: #020617;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    canvas { display: block; border-radius: 6px; }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      border-radius: 6px;
+    }
+    .overlay.hidden { display: none; }
+    .btn {
+      background: #f59e0b;
+      color: #020617;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .btn:hover { background: #d97706; }
+    .controls-hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <div>SCORE: <span id="score">0</span></div>
+    <div>BEST: <span id="best">0</span></div>
+  </div>
+
+  <div class="game-box">
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div id="overlay" class="overlay">
+      <h2 id="msg" style="color:#f59e0b; font-size:24px;">HEX RUSH</h2>
+      <button id="start-btn" class="btn">START GAME</button>
+    </div>
+  </div>
+
+  <div class="controls-hint">Left / Right Arrows or A / D to rotate hexagon &bull; Tap sides on mobile</div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const bestEl = document.getElementById('best');
+    const overlay = document.getElementById('overlay');
+    const startBtn = document.getElementById('start-btn');
+    const msgEl = document.getElementById('msg');
+
+    const CENTER_X = canvas.width / 2;
+    const CENTER_Y = canvas.height / 2;
+    const HEX_RADIUS = 50;
+    const SIDES = 6;
+    const COLORS = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b'];
+
+    let rotation = 0;
+    let targetRotation = 0;
+    let score = 0;
+    let best = parseInt(localStorage.getItem('vault_hex_best') || '0', 10);
+    bestEl.textContent = best;
+    let isRunning = false;
+    let animId = null;
+
+    // Blocks stacked on each side: array of colors
+    let stacks = [[], [], [], [], [], []];
+    let incomingBars = [];
+    let spawnTimer = 0;
+    let gameSpeed = 1.8;
+
+    function resetGame() {
+      score = 0;
+      rotation = 0;
+      targetRotation = 0;
+      scoreEl.textContent = '0';
+      stacks = [[], [], [], [], [], []];
+      incomingBars = [];
+      spawnTimer = 40;
+      gameSpeed = 1.8;
+      isRunning = true;
+      overlay.classList.add('hidden');
+      if (animId) cancelAnimationFrame(animId);
+      animId = requestAnimationFrame(loop);
+    }
+
+    function rotateLeft() {
+      targetRotation -= Math.PI / 3;
+    }
+
+    function rotateRight() {
+      targetRotation += Math.PI / 3;
+    }
+
+    function spawnBar() {
+      const side = Math.floor(Math.random() * 6);
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      incomingBars.push({
+        side: side,
+        color: color,
+        dist: 220
+      });
+    }
+
+    function checkCombos() {
+      for (let s = 0; s < 6; s++) {
+        const stack = stacks[s];
+        if (stack.length >= 3) {
+          // Check last 3 colors
+          const len = stack.length;
+          if (stack[len - 1] === stack[len - 2] && stack[len - 2] === stack[len - 3]) {
+            stack.splice(len - 3, 3);
+            score += 30;
+            scoreEl.textContent = score;
+            if (score > best) {
+              best = score;
+              bestEl.textContent = best;
+              localStorage.setItem('vault_hex_best', best);
+            }
+          }
+        }
+      }
+    }
+
+    function loop() {
+      if (!isRunning) return;
+
+      // Smooth rotation interpolation
+      rotation += (targetRotation - rotation) * 0.25;
+
+      // Spawn incoming bars
+      spawnTimer--;
+      if (spawnTimer <= 0) {
+        spawnBar();
+        spawnTimer = Math.max(35, 75 - Math.floor(score / 50));
+        gameSpeed = 1.8 + Math.min(2.5, score / 200);
+      }
+
+      // Update incoming bars
+      for (let i = incomingBars.length - 1; i >= 0; i--) {
+        const bar = incomingBars[i];
+        bar.dist -= gameSpeed;
+
+        // Current stack height on this side
+        // Account for current rotation of hexagon relative to side
+        const currentRotStep = Math.round(rotation / (Math.PI / 3));
+        const landingSide = ((bar.side - currentRotStep) % 6 + 6) % 6;
+        const currentStackHeight = stacks[landingSide].length;
+        const targetDist = HEX_RADIUS + currentStackHeight * 12 + 6;
+
+        if (bar.dist <= targetDist) {
+          // Landed on stack
+          stacks[landingSide].push(bar.color);
+          incomingBars.splice(i, 1);
+          checkCombos();
+
+          // Check overflow game over (stack too high)
+          if (stacks[landingSide].length > 7) {
+            return gameOver();
+          }
+        }
+      }
+
+      draw();
+      animId = requestAnimationFrame(loop);
+    }
+
+    function draw() {
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.translate(CENTER_X, CENTER_Y);
+
+      // Draw Center Hexagon with rotation
+      ctx.save();
+      ctx.rotate(rotation);
+
+      // Core Hexagon
+      ctx.strokeStyle = '#334155';
+      ctx.fillStyle = '#0f172a';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = i * Math.PI / 3;
+        const x = HEX_RADIUS * Math.cos(angle);
+        const y = HEX_RADIUS * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Draw Stacked blocks on each side of the hexagon
+      for (let s = 0; s < 6; s++) {
+        const angleMid = s * Math.PI / 3 + Math.PI / 6;
+        const stack = stacks[s];
+        stack.forEach((c, idx) => {
+          const r = HEX_RADIUS + idx * 12 + 6;
+          ctx.save();
+          ctx.rotate(s * Math.PI / 3);
+          ctx.fillStyle = c;
+          ctx.beginPath();
+          ctx.roundRect(-22, HEX_RADIUS + idx * 12 + 2, 44, 10, 2);
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+      ctx.restore(); // Restore center rotation
+
+      // Draw incoming bars (in world space)
+      incomingBars.forEach(b => {
+        ctx.save();
+        ctx.rotate(b.side * Math.PI / 3);
+        ctx.fillStyle = b.color;
+        ctx.beginPath();
+        ctx.roundRect(-22, b.dist, 44, 10, 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    function gameOver() {
+      isRunning = false;
+      msgEl.textContent = 'GAME OVER';
+      startBtn.textContent = 'PLAY AGAIN';
+      overlay.classList.remove('hidden');
+    }
+
+    window.addEventListener('keydown', e => {
+      if (['ArrowLeft', 'KeyA'].includes(e.code)) rotateLeft();
+      if (['ArrowRight', 'KeyD'].includes(e.code)) rotateRight();
+    });
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (x < canvas.width / 2) rotateLeft();
+      else rotateRight();
+    });
+
+    startBtn.addEventListener('click', resetGame);
+    draw();
+  </script>
+</body>
+</html>

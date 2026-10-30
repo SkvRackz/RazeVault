@@ -1,0 +1,6 @@
+{
+  "name": "VaultGames - Unblocked Games Hub",
+  "description": "Fast and responsive unblocked games platform storing games as iframes in a JSON database with cloak features and retro arcade classics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

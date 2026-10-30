@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tic-Tac-Toe Pro</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      background: #0b0f19;
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 16px;
+      overflow: hidden;
+    }
+    .hud {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .mode-btn {
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .mode-btn.active {
+      background: #3b82f6;
+      color: #fff;
+      border-color: #3b82f6;
+    }
+    .status {
+      font-size: 18px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 14px;
+      height: 26px;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 90px);
+      grid-template-rows: repeat(3, 90px);
+      gap: 8px;
+      background: #1e293b;
+      padding: 10px;
+      border-radius: 12px;
+      border: 2px solid #334155;
+    }
+    .cell {
+      background: #020617;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .cell:hover:empty { background: #0f172a; }
+    .cell.x { color: #38bdf8; }
+    .cell.o { color: #f43f5e; }
+    .btn-reset {
+      margin-top: 16px;
+      background: #334155;
+      color: #f8fafc;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-reset:hover { background: #475569; }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <button id="ai-btn" class="mode-btn active">VS AI (Smart)</button>
+    <button id="pvp-btn" class="mode-btn">2 PLAYERS</button>
+  </div>
+
+  <div id="status" class="status">Player X's Turn</div>
+
+  <div id="board" class="board">
+    <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
+    <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
+    <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
+  </div>
+
+  <button id="reset-btn" class="btn-reset">Restart Game</button>
+
+  <script>
+    let board = Array(9).fill('');
+    let turn = 'X';
+    let vsAI = true;
+    let active = true;
+
+    const cells = document.querySelectorAll('.cell');
+    const statusEl = document.getElementById('status');
+    const aiBtn = document.getElementById('ai-btn');
+    const pvpBtn = document.getElementById('pvp-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    const WINS = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+
+    function checkWinState(b) {
+      for (const [a, c, d] of WINS) {
+        if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a];
+      }
+      if (b.every(x => x !== '')) return 'tie';
+      return null;
+    }
+
+    function minimax(b, depth, isMax) {
+      const winner = checkWinState(b);
+      if (winner === 'O') return 10 - depth;
+      if (winner === 'X') return depth - 10;
+      if (winner === 'tie') return 0;
+
+      if (isMax) {
+        let best = -Infinity;
+        for (let i = 0; i < 9; i++) {
+          if (!b[i]) {
+            b[i] = 'O';
+            best = Math.max(best, minimax(b, depth + 1, false));
+            b[i] = '';
+          }
+        }
+        return best;
+      } else {
+        let best = Infinity;
+        for (let i = 0; i < 9; i++) {
+          if (!b[i]) {
+            b[i] = 'X';
+            best = Math.min(best, minimax(b, depth + 1, true));
+            b[i] = '';
+          }
+        }
+        return best;
+      }
+    }
+
+    function bestMove() {
+      let bestVal = -Infinity;
+      let move = -1;
+      for (let i = 0; i < 9; i++) {
+        if (!board[i]) {
+          board[i] = 'O';
+          let val = minimax(board, 0, false);
+          board[i] = '';
+          if (val > bestVal) {
+            bestVal = val;
+            move = i;
+          }
+        }
+      }
+      return move;
+    }
+
+    function handleClick(idx) {
+      if (!active || board[idx]) return;
+
+      board[idx] = turn;
+      render();
+
+      const win = checkWinState(board);
+      if (win) return end(win);
+
+      if (vsAI) {
+        turn = 'O';
+        statusEl.textContent = 'AI is thinking...';
+        active = false;
+        setTimeout(() => {
+          const move = bestMove();
+          if (move !== -1) board[move] = 'O';
+          render();
+          const winAI = checkWinState(board);
+          if (winAI) return end(winAI);
+          turn = 'X';
+          statusEl.textContent = "Player X's Turn";
+          active = true;
+        }, 300);
+      } else {
+        turn = turn === 'X' ? 'O' : 'X';
+        statusEl.textContent = `Player ${turn}'s Turn`;
+      }
+    }
+
+    function render() {
+      cells.forEach((cell, i) => {
+        cell.textContent = board[i];
+        cell.className = 'cell ' + (board[i] ? board[i].toLowerCase() : '');
+      });
+    }
+
+    function end(result) {
+      active = false;
+      if (result === 'tie') {
+        statusEl.textContent = "It's a Draw!";
+      } else {
+        statusEl.textContent = `Player ${result} Wins! 🎉`;
+      }
+    }
+
+    function reset() {
+      board = Array(9).fill('');
+      turn = 'X';
+      active = true;
+      statusEl.textContent = "Player X's Turn";
+      render();
+    }
+
+    cells.forEach((c, idx) => c.addEventListener('click', () => handleClick(idx)));
+    resetBtn.addEventListener('click', reset);
+
+    aiBtn.addEventListener('click', () => {
+      vsAI = true;
+      aiBtn.classList.add('active');
+      pvpBtn.classList.remove('active');
+      reset();
+    });
+
+    pvpBtn.addEventListener('click', () => {
+      vsAI = false;
+      pvpBtn.classList.add('active');
+      aiBtn.classList.remove('active');
+      reset();
+    });
+
+    reset();
+  </script>
+</body>
+</html>
